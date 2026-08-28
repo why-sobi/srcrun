@@ -17,8 +17,8 @@ For example, `srcrun ptree -e venv -x py` executes `ptree.py` while passing `-e 
 Clone the repository to your preferred local directory:
 
 ```bash
-git clone <repository-url> scripts
-cd scripts
+git clone https://github.com/why-sobi/srcrun.git
+cd srcrun
 
 ```
 
