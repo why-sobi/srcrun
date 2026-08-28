@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+# Check if script name was provided
+if [ -z "$1" ]; then
+    echo "Error: No script name provided."
+    echo "Usage: srcrun <script_name> [args...]"
+    exit 1
+fi
+
+SCRIPT_NAME="$1"
+shift  # Discard script name, leaving only optional flags/args in "$@"
+
+# Resolve the absolute path of the directory containing this launcher script
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+TARGET_PY="$SCRIPT_DIR/$SCRIPT_NAME.py"
+
+# Verify Python script exists before calling python3
+if [ -f "$TARGET_PY" ]; then
+    python3 "$TARGET_PY" "$@"
+else
+    echo "Error: Script '$SCRIPT_NAME.py' not found in $SCRIPT_DIR"
+    exit 1
+fi
