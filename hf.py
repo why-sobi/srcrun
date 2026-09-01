@@ -4,27 +4,24 @@ import argparse
 
 load_dotenv()
 
-def download_model(name: str, repo_type: str, outpath:str = None) -> None:
-    """
-    Download a model/dataset/space from Hugging Face Hub.
-
-    Args:
-        name (str): The name of the model/dataset/space to download.
-        repo_type (str): The type of the resource to download.
-    """
+def download_model(name: str, repo_type: str, outpath: str = None, allow_patterns: list = None) -> None:
     snapshot_download(
         repo_id=name, 
         local_dir=outpath or f"./{name}",
-        repo_type=repo_type
+        repo_type=repo_type,
+        allow_patterns=allow_patterns
     )
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Download a model/dataset/space from Hugging Face Hub to where the command was ran from.")
-    parser.add_argument("--name", type=str, required=True, help="The name of the model/dataset/space to download.")
-    parser.add_argument("--type", type=str, choices=["model", "dataset", "space"], default="model", help="The type of the resource to download (default: model).")
-    parser.add_argument("--outpath", type=str, help="The output path where the resource will be downloaded (default: current directory).")
+    parser = argparse.ArgumentParser(description="Download resources from Hugging Face Hub.")
+    parser.add_argument("--name", type=str, required=True, help="The name of the model/dataset/space.")
+    parser.add_argument("--type", type=str, choices=["model", "dataset", "space"], default="model", help="The type of resource.")
+    parser.add_argument("--outpath", type=str, help="The output path.")
+    
+    # nargs='*' allows you to pass multiple patterns separated by spaces
+    parser.add_argument("--allow-patterns", nargs="*", help="One or more file patterns to match, e.g. '*.gguf' '*.json'")
     args = parser.parse_args()
     
-    print(f"Downloading {args.type} '{args.name}' to '{args.outpath or './' + args.name}' from Hugging Face Hub...")
+    print(f"Downloading {args.type} '{args.name}' with patterns {args.allow_patterns or 'all'}...")
     
-    download_model(args.name, args.type, args.outpath)
+    download_model(args.name, args.type, args.outpath, args.allow_patterns)
