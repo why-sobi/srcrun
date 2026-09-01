@@ -22,6 +22,6 @@ if __name__ == "__main__":
     parser.add_argument("--allow-patterns", nargs="*", help="One or more file patterns to match, e.g. '*.gguf' '*.json'")
     args = parser.parse_args()
     
-    print(f"Downloading {args.type} '{args.name}' with patterns {args.allow_patterns or 'all'}...")
+    print(f"Downloading {args.type} '{args.name}' to {args.outpath or f'./{args.name}'} with patterns {args.allow_patterns or 'all'}...")
     
     download_model(args.name, args.type, args.outpath, args.allow_patterns)
