@@ -16,11 +16,14 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Download resources from Hugging Face Hub.")
     parser.add_argument("--name", type=str, required=True, help="The name of the model/dataset/space.")
     parser.add_argument("--type", type=str, choices=["model", "dataset", "space"], default="model", help="The type of resource.")
-    parser.add_argument("--outpath", type=str, help="The output path.")
+    parser.add_argument("--outpath", type=str, help="The output path. (NOTE: Appends model name to path for clean directory setup)")
     
     # nargs='*' allows you to pass multiple patterns separated by spaces
     parser.add_argument("--allow-patterns", nargs="*", help="One or more file patterns to match, e.g. '*.gguf' '*.json'")
     args = parser.parse_args()
+    
+    if not args.outpath.endswith(args.name):
+        args.outpath = args.outpath + '/' + args.name 
     
     print(f"Downloading {args.type} '{args.name}' to {args.outpath or f'./{args.name}'} with patterns {args.allow_patterns or 'all'}...")
     
